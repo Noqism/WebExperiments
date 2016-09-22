@@ -11,6 +11,40 @@
 
 <body>
 
+<style type="text/css">
+p
+{
+	font-size: 12px;
+	font-family:  "Calibri";
+	color: #ffffff;
+}
+
+#infoboxa
+{
+	position: absolute;
+	background-color: #5c595a;
+	width: 300px;
+	horizontal-align: middle;
+    left: 50%;
+	margin-left: -150px;
+	top: 20px;
+}
+
+#infoboxb
+{
+	position: absolute;
+	background-color: #5c595a;
+	width: 300px;
+	horizontal-align: middle;
+    left: 50%;
+	margin-left: -150px;
+	bottom: 20px;
+}
+</style>
+
+
+
+
 <?php
 
 $redbg = rand(0,100);
@@ -18,24 +52,63 @@ $greenbg = rand(0,100);
 $bluebg = rand(0,100);
 $colorMinus = rand(30,40);
 
+//Check for recurrence
 if(isset($_POST['update_bpm']))
 {
+	//Check if bpm box was empty or a text string
 	if (empty($_POST['bpm']))
 	{
-		$beatsPerMinute = 90;
+		//----- ACTIVATE DEMOMODE-----
+		$beatsPerMinute = 132;
+	
+		echo '
+		<div id="infoboxa">
+		<center>
+		<p>
+		-DEMO MODE-
+		<br />
+		&#9835 : Noq - Pea Soup
+		</p>
+		</center>
+	
+		<audio controls autoplay>
+		<source src="./peasoup.mp3" type="audio/mpeg" />
+		</audio>
+		</div>
+		';
 	}
+	//Set maximum limit for bpm
 	elseif ($_POST['bpm'] <= 600)
 	{
 		$beatsPerMinute = $_POST['bpm'];
 	}
+	//Set bpm to 90 is limit was exceeded
 	else
 	{
 		$beatsPerMinute = 90;
 	}
 }
+//If there was no recurrence...
 else
 {
-	$beatsPerMinute = 90;
+	//----- ACTIVATE DEMOMODE-----
+	$beatsPerMinute = 132;
+	
+	echo '
+	<div id="infoboxa">
+	<center>
+	<p>
+	-DEMO MODE-
+	<br />
+	&#9835 : Noq - Pea Soup
+	</p>
+	</center>
+	
+	<audio controls autoplay>
+	<source src="./peasoup.mp3" type="audio/mpeg" />
+	</audio>
+	</div>
+	';
 }
 
 
@@ -44,12 +117,6 @@ $animInterval = 60/$beatsPerMinute;
 
 		echo '
 		<style type="text/css">
-		
-		*{
-			font-size: 12px;
-			font-family:  "Calibri";
-		}
-		
 		@keyframes rave
 		{
 			0%		{background-color: rgb(' . $redbg . ',' . $greenbg . ',' . $bluebg .  ');}
@@ -213,16 +280,21 @@ $animInterval = 60/$beatsPerMinute;
 		<div id="raveboxd"></div>
 		
 		
-		<div style="position: absolute; horizontal-align: middle; bottom: 20px; background-color: white">
-		PHP/CSS Rave Strobe v1 by Noq<br />
+		<div id="infoboxb">
+		<center><p>PHP/CSS Rave Strobe v1.2 by Noq</p></center>
 		<hr>
 
-		Currently animating at '.$beatsPerMinute.'&nbspBPM<br /><br />
-		<form action="./phpstrobe.php" method="post">
-		&nbsp&nbsp
-		<input type="text" name="bpm" size="3" value="" />BPM &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-		<input type="submit" name="update_bpm" value="Update" />
 		
+		<form action="./phpstrobe.php" method="post">
+		<p>
+		<center>
+		<input type="text" name="bpm" size="3" value="" />
+		<input type="submit" name="update_bpm" value="Update BPM" />
+		</center>
+		</p>
+		
+		<center><p>Currently animating at <b>'.$beatsPerMinute.'&nbspBPM</p></b></center>
+
 		</form>
 		</div>
 		';
